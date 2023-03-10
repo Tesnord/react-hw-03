@@ -1,42 +1,38 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { ImSearch } from 'react-icons/im';
 
-export default class Searchbar extends Component {
-  state = {
-    query: '',
+export default function Searchbar({ onSubmit }) {
+  const [query, setQuery] = useState('');
+
+  const inputSearch = event => {
+    setQuery(event.currentTarget.value);
   };
 
-  inputSearch = event => {
-    this.setState({ query: event.currentTarget.value });
-  };
-
-  search = event => {
+  const search = event => {
     event.preventDefault();
 
-    this.props.onSubmit(this.state.query);
+    onSubmit(query);
 
-    this.setState({ query: '' });
+    setQuery('');
   };
 
-  render() {
-    return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.search}>
-          <button type="submit" className="SearchForm-button">
-            <ImSearch size={25} />
-          </button>
+  return (
+    <header className="Searchbar">
+      <form className="SearchForm" onSubmit={search}>
+        <button type="submit" className="SearchForm-button">
+          <ImSearch size={25} />
+        </button>
 
-          <input
-            value={this.state.query}
-            onChange={this.inputSearch}
-            className="SearchForm-input"
-            type="text"
-            autocomplete="off"
-            autofocus
-            placeholder="Search images and photos"
-          />
-        </form>
-      </header>
-    );
-  }
+        <input
+          value={query}
+          onChange={inputSearch}
+          className="SearchForm-input"
+          type="text"
+          autocomplete="off"
+          autofocus
+          placeholder="Search images and photos"
+        />
+      </form>
+    </header>
+  );
 }
